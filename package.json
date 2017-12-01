@@ -1,0 +1,13 @@
+{
+  "name": "nodecloud-gateway",
+  "version": "0.1.0",
+  "description": "",
+  
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nodecloud/nodecloud-gateway.git"
+  },
+  
+  "author": "yedaodao",
+  "license": "MIT"
+}
