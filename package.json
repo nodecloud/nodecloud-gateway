@@ -2,12 +2,20 @@
   "name": "nodecloud-gateway",
   "version": "0.1.0",
   "description": "",
-  
   "repository": {
     "type": "git",
     "url": "https://github.com/nodecloud/nodecloud-gateway.git"
   },
-  
   "author": "yedaodao",
-  "license": "MIT"
+  "license": "MIT",
+  "scripts": {
+    "build": "babel lib -d build",
+    "test": "ava"
+  },
+  "devDependencies": {
+    "ava": "^0.24.0",
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.0",
+    "babel-preset-env": "^1.6.1"
+  }
 }
