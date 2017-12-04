@@ -6,7 +6,7 @@ export default class DebugRouteGatewayFilter extends RouteGatewayFilter {
     }
 
     async action(ctx) {
-        let str = ctx.get('X-GATEWAY-TEST-ORDER') || '';
-        ctx.set('X-GATEWAY-TEST-ORDER', str + ',ROUTE');
+        let str = ctx.response.headers['x-gateway-test-order'] || '';
+        ctx.set('x-gateway-test-order', str + ',ROUTE');
     }
 }

@@ -6,7 +6,7 @@ export default class DebugPostGatewayFilter extends PostGatewayFilter {
     }
 
     async action(ctx) {
-        let str = ctx.get('X-GATEWAY-TEST-ORDER') || '';
-        ctx.set('X-GATEWAY-TEST-ORDER', str + ',POST');
+        let str = ctx.response.headers['x-gateway-test-order'] || '';
+        ctx.set('x-gateway-test-order', str + ',POST');
     }
 }
