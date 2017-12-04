@@ -5,6 +5,7 @@ import request from 'supertest';
 
 import FilterProcess from '../lib/FilterProcess';
 import DebugPreGatewayFilter from './filters/DebugPreGatewayFilter';
+import DebugPreGatewayFilter2 from './filters/DebugPreGatewayFilter2';
 import DebugRouteGatewayFilter from './filters/DebugRouteGatewayFilter';
 import DebugPostGatewayFilter from './filters/DebugPostGatewayFilter';
 import {routeApp} from './support';
@@ -19,6 +20,7 @@ test.cb('runFilters() to test type', t => {
     const app = new Koa();
     let filters = [
         DebugPreGatewayFilter,
+        DebugPreGatewayFilter2,
         DebugRouteGatewayFilter,
         DebugPostGatewayFilter
     ].map(klass => new klass(app));
@@ -34,7 +36,7 @@ test.cb('runFilters() to test type', t => {
             if (err) {
                 throw err;
             }
-            t.is(res.header['x-gateway-test-order'], ',PRE,ROUTE,POST');
+            t.is(res.header['x-gateway-test-order'], ',PRE,PRE2,ROUTE,POST');
             t.end();
         });
 });
