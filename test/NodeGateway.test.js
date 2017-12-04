@@ -38,3 +38,12 @@ test.cb('init', t => {
             t.end();
         });
 });
+
+test('initWithService', t => {
+    const gateway = new NodeGateway();
+    const app = new Koa();
+    t.throws(() => {
+        gateway.initWithService(app, []);
+        gateway.initWithService(app, [], {});
+    });
+});
