@@ -18,7 +18,17 @@ test('getDefaultRouteConfig', (t) => {
             },
         }
     });
-    console.log(JSON.stringify(routeConfig));
     t.is(_.get(routeConfig, 'ignoreRegx') instanceof RegExp, true);
     t.is(_.get(routeConfig, ['routes', 'cloud-service', 'ignoreRegx']) instanceof RegExp, true);
+    t.is(_.get(routeConfig, ['routes', 'cloud-service', 'pathPrefix', 'length']), 2);
+    routeConfig = parseRouteConfig({
+        prefix: '/api',
+        routes: {
+            "cloud-service": {
+                path: "**/clouds/"
+            }
+        }
+    });
+    t.is(_.get(routeConfig, ['routes', 'cloud-service', 'pathPrefix', 'length']), 1);
+    t.is(_.get(routeConfig, ['routes', 'cloud-service', 'pathPrefix', 0]), 'api');
 });
