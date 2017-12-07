@@ -1,8 +1,6 @@
 import test from 'ava';
 import Koa from 'koa';
 import request from 'supertest';
-import http from 'http';
-import _ from 'lodash';
 
 import {getMockClient} from '../support';
 import ServiceGatewayFilter from '../../lib/support/ServiceGatewayFilter';
@@ -113,7 +111,8 @@ test('ServiceGatewayFilter.getTargetOptions', async (t) => {
         parseRouteConfig({
             routes: {
                 'service0': {
-                    path: '/example1/**'
+                    path: '/example1/**',
+                    url: '/'
                 },
                 'service1': {
                     path: '/example/**'
@@ -127,7 +126,7 @@ test('ServiceGatewayFilter.getTargetOptions', async (t) => {
         null
     );
     targetOptions = await ServiceGatewayFilter.getTargetOptions(
-        'http://192.168.0.30:3000/api/example/a/b?a=1#abc',
+        'http://192.168.0.30:3000/api/example/a/b?a=1',
         parseRouteConfig({
             routes: {
                 'service0': {
@@ -135,7 +134,7 @@ test('ServiceGatewayFilter.getTargetOptions', async (t) => {
                 },
                 'service1': {
                     path: '/api/example/**',
-                    url: 'http://example.com/example/a/b?a=1#abc'
+                    url: 'http://example.com/example/a/b?a=1'
                 }
             }
         }),
@@ -143,7 +142,50 @@ test('ServiceGatewayFilter.getTargetOptions', async (t) => {
     );
     t.is(
         targetOptions.target,
-        'http://example.com/example/a/b?a=1#abc'
+        'http://example.com/example/a/b?a=1'
     );
+});
+
+test.cb('ServiceGatewayFilter.action', (t) => {
+    let gatewayApp = new Koa(),
+        serviceApp = new Koa();
+    gatewayApp.context.routeConfig = parseRouteConfig({
+        prefix: '/api',
+        routes: {
+            'service0': {
+                path: '/example1/**',
+                url: 'http://localhost:3001'
+            },
+            'service1': {
+                path: '/example/a/b/**'
+            }
+        }
+    });
+    gatewayApp.context.serviceClient = getMockClient();
+    let filter = new ServiceGatewayFilter(gatewayApp);
+    filter.run();
+    serviceApp.use(async function (ctx, next) {
+        ctx.body = 'Hello world';
+    });
+    serviceApp.listen(3001, () => {
+        request(gatewayApp.listen())
+            .get('/api/example/a/b/?a=1#abc')
+            .end((err, res) => {
+                if (err) {
+                    throw err;
+                }
+                t.is(res.text, 'Hello world');
+                t.end();
+            });
+        request(gatewayApp.listen())
+            .get('/api/example1/a/b/?a=1#abc')
+            .end((err, res) => {
+                if (err) {
+                    throw err;
+                }
+                t.is(res.text, 'Hello world');
+                t.end();
+            });
+    });
 });
 
