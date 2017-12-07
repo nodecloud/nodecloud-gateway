@@ -6,3 +6,20 @@ export function routeApp(app) {
     });
 }
 
+export function getMockClient() {
+    return {
+        getClient(serviceName) {
+            return {
+                getService(){
+                    return {
+                        Service: {
+                            Address: "localhost",
+                            Port: 3001
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+

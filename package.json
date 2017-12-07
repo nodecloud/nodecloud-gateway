@@ -10,7 +10,8 @@
   "license": "MIT",
   "scripts": {
     "build": "babel lib -d build",
-    "test": "ava test/*.test.js  test/**/*.test.js"
+    "test2": "ava test/*.test.js  test/**/*.test.js",
+    "test": "ava test/filter/*.test.js"
   },
   "ava": {
     "require": "babel-register",
