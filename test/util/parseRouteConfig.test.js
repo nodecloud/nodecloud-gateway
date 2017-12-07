@@ -18,8 +18,6 @@ test('getDefaultRouteConfig', (t) => {
             },
         }
     });
-    t.is(_.get(routeConfig, 'ignoreRegx') instanceof RegExp, true);
-    t.is(_.get(routeConfig, ['routes', 'cloud-service', 'ignoreRegx']) instanceof RegExp, true);
     t.is(_.get(routeConfig, ['routes', 'cloud-service', 'pathPrefix']), '/api/clouds/');
     routeConfig = parseRouteConfig({
         prefix: '/api',
@@ -29,7 +27,7 @@ test('getDefaultRouteConfig', (t) => {
             }
         }
     });
-    t.is(_.get(routeConfig, ['routes', 'cloud-service', 'pathPrefix']), '/api/');
+    t.is(_.get(routeConfig, ['routes', 'cloud-service', 'pathPrefix']), null);
     routeConfig = parseRouteConfig({
         routes: {
             "cloud-service": {
