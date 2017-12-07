@@ -12,10 +12,46 @@ Install it via npm:
 npm install --save nodecloud-gateway
 ```
 
+Implements a filter extends `PreGatewayFilter`(or `AbstractGatewayFilter`, `RouteGatewayFilter`, `PostGatewayFilter`).
+
+The filter which extends `PreGatewayfilter` will be executed first. The following filters extend `RouteGatewayFilter` and `PostGatewayFilter` classes.
+
+```javascript
+import {PreGatewayFilter} from 'nodecloud-gateway';
+
+export default class DebugPreGatewayFilter extends PreGatewayFilter {
+    constructor(app) {
+        super(app);
+    }
+
+    // Likes the koa middleware
+    async action(ctx) {
+        ctx.set('x-gateway', true);
+    }
+}
+```
+
+
 Use it with koa framework:
 
 ```javascript
+import Koa from 'koa';
+import {NodeGateway} from 'nodecloud-gateway';
 
+import DebugPreGatewayFilter from './DebugPreGatewayFilter'
+
+const gateway = new NodeGateway();
+const app = new Koa();
+
+// All responses have the header 'x-gateway: true'
+gateway.init(app, [DebugPreGatewayFilter])
+
+// other koa logic and middlewares
+app.listen(3000);
 ```
+
+## API
+
+## Issues
 
 
