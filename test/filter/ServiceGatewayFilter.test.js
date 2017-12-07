@@ -108,5 +108,42 @@ test('ServiceGatewayFilter.getTargetOptions', async (t) => {
         targetOptions.target,
         'http://localhost:3001/example/a/b/?a=1#abc'
     );
+    targetOptions = await ServiceGatewayFilter.getTargetOptions(
+        'http://192.168.0.30:3000/api/example/a/b?a=1#abc',
+        parseRouteConfig({
+            routes: {
+                'service0': {
+                    path: '/example1/**'
+                },
+                'service1': {
+                    path: '/example/**'
+                }
+            }
+        }),
+        getMockClient()
+    );
+    t.is(
+        targetOptions,
+        null
+    );
+    targetOptions = await ServiceGatewayFilter.getTargetOptions(
+        'http://192.168.0.30:3000/api/example/a/b?a=1#abc',
+        parseRouteConfig({
+            routes: {
+                'service0': {
+                    path: '/example1/**'
+                },
+                'service1': {
+                    path: '/api/example/**',
+                    url: 'http://example.com/example/a/b?a=1#abc'
+                }
+            }
+        }),
+        getMockClient()
+    );
+    t.is(
+        targetOptions.target,
+        'http://example.com/example/a/b?a=1#abc'
+    );
 });
 
