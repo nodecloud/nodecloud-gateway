@@ -203,6 +203,5 @@ fabric.properties
 
 # Custom
 .idea/
-build/
 
 # End of https://www.gitignore.io/api/OSX,Linux,WebStorm,SublimeText,node

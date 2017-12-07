@@ -12,6 +12,7 @@
     "build": "babel lib -d build",
     "test": "ava test/*.test.js  test/**/*.test.js"
   },
+  "main": "build/index.js",
   "ava": {
     "require": "babel-register",
     "babel": "inherit"
