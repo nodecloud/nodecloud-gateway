@@ -50,7 +50,45 @@ gateway.init(app, [DebugPreGatewayFilter])
 app.listen(3000);
 ```
 
+Use it with [nodecloud-boot](https://github.com/nodecloud/nodecloud-boot), and You must create `routeConfig`
+
+```javascript
+import NCBoot from 'nodecloud-boot';
+import Koa from 'koa';
+import {NodeGateway} from 'nodecloud-gateway';
+
+const ncBoot = NCBoot.getInstance(__dirname);
+const app = new Koa();
+const gateway = new NodeGateway();
+const routeConfig = {
+    prefix: '/api',
+    routes: {
+      'service0': {
+          path: '/example1/**'
+      },
+      'service1': {
+          path: '/example/**',
+          ignorePattern: /\/example\/a\//
+      }
+    }
+};
+
+ncBoot.initApp(()=>{
+    // other koa logic and middlewares
+    
+    NodeGateway.initWithService(app, null, routeConfig, ncboot.client);
+    return app.callback();
+})
+
+```
+
 ## API
+
+### routeConfig
+
+```javascript
+
+```
 
 ## Issues
 
