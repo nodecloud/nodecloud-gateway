@@ -186,7 +186,7 @@ test.cb('ServiceGatewayFilter.action', (t) => {
             'service1': {
                 path: '/example/a/b/**',
                 ignorePattern: /a=2/
-            }
+            },
         }
     });
     gatewayApp.context.serviceClient = getMockClient();
